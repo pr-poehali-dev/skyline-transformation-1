@@ -60,34 +60,53 @@ export const Hero3DWebGL = () => {
           </div>
         </div>
 
-        {/* Низ — автор справа */}
-        <div className="flex justify-end pb-4 md:pb-8">
-          <div className="text-right max-w-xs">
-            <div className="w-full h-px bg-gradient-to-l from-yellow-500/40 to-transparent mb-4" />
-            <p className="text-gray-300 text-sm font-geist leading-relaxed">
-              Выполнила ученица 9А класса
+        {/* Низ — автор справа + город по центру */}
+        <div className="flex items-end justify-between pb-4 md:pb-8">
+
+          {/* Пустое место слева */}
+          <div className="flex-1" />
+
+          {/* Город по центру */}
+          <div className="flex-1 text-center">
+            <div className="mx-auto w-24 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent mb-3" />
+            <p className="text-gray-400 text-sm font-geist tracking-widest">
+              Стерлитамак 2026
             </p>
-            <p className="text-gray-300 text-sm font-geist leading-relaxed">
-              МАОУ «Гимназия №4»
-            </p>
-            <p className="text-gray-300 text-sm font-geist leading-relaxed">
-              ГО г. Стерлитамак РБ
-            </p>
-            <p className="text-white text-base font-semibold font-geist mt-2">
-              Кизина Екатерина
-            </p>
-            <div className="mt-3 pt-3 border-t border-yellow-500/20">
-              <p className="text-gray-400 text-xs font-geist leading-relaxed">
-                Научный руководитель
+          </div>
+
+          {/* Автор справа */}
+          <div className="flex-1 flex justify-end">
+            <div className="text-right max-w-xs">
+              <div className="w-full h-px bg-gradient-to-l from-yellow-500/40 to-transparent mb-4" />
+              <p className="text-gray-300 text-sm font-geist leading-relaxed">
+                Выполнила ученица 9А класса
               </p>
-              <p className="text-gray-400 text-xs font-geist leading-relaxed">
-                учитель обществознания и истории
+              <p className="text-gray-300 text-sm font-geist leading-relaxed">
+                МАОУ «Гимназия №4»
               </p>
-              <p className="text-gray-400 text-xs font-geist leading-relaxed">
-                высшей квалификационной категории
+              <p className="text-gray-300 text-sm font-geist leading-relaxed">
+                ГО г. Стерлитамак РБ
               </p>
+              <p className="text-white text-base font-semibold font-geist mt-2">
+                Кизина Екатерина
+              </p>
+              <div className="mt-3 pt-3 border-t border-yellow-500/20">
+                <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                  Научный руководитель
+                </p>
+                <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                  учитель обществознания и истории
+                </p>
+                <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                  высшей квалификационной категории
+                </p>
+                <p className="text-white text-sm font-semibold font-geist mt-1">
+                  Шакбасарова Гульназ Фаргатовна
+                </p>
+              </div>
             </div>
           </div>
+
         </div>
 
       </div>
