@@ -3,51 +3,51 @@ import { Badge } from "@/components/ui/badge"
 
 const features = [
   {
-    title: "Адаптивная нейрообработка",
-    description: "Самооптимизирующиеся алгоритмы, которые обучаются на нейронных паттернах и улучшают интерпретацию сигналов.",
-    icon: "brain",
-    badge: "ИИ",
+    title: "Бесплатно для молодёжи",
+    description: "Карта выдаётся гражданам России от 14 до 22 лет абсолютно бесплатно. Никаких скрытых платежей и условий.",
+    icon: "gift",
+    badge: "Бесплатно",
   },
   {
-    title: "Медицинская защита",
-    description: "Шифрование по стандартам FDA со сквозной защитой конфиденциальных нейронных данных.",
-    icon: "lock",
-    badge: "Сертификат",
+    title: "5 000 ₽ каждый год",
+    description: "Ежегодное пополнение баланса на 5 000 рублей за счёт государства для посещения культурных мероприятий.",
+    icon: "wallet",
+    badge: "Гос. поддержка",
   },
   {
-    title: "Интуитивное управление",
-    description: "Естественная трансляция мыслей в действия с откликом менее миллисекунды и точностью 99,7%.",
-    icon: "globe",
-    badge: "Точность",
+    title: "Тысячи площадок",
+    description: "Театры, музеи, выставки, кинотеатры и концертные залы по всей стране принимают Пушкинскую карту.",
+    icon: "map",
+    badge: "По всей России",
   },
   {
-    title: "Предиктивная калибровка",
-    description: "ML-модели, которые предугадывают намерения пользователя и оптимизируют нейронные пути.",
-    icon: "zap",
-    badge: "Умный",
+    title: "Удобная оплата",
+    description: "Оплата через приложение «Госуслуги Культура» или на кассе. Просто, быстро и без лишних шагов.",
+    icon: "phone",
+    badge: "Цифровая",
   },
   {
-    title: "Биометрическая интеграция",
-    description: "Бесшовная синхронизация с мониторингом жизненных показателей для контроля здоровья.",
-    icon: "link",
-    badge: "Связь",
+    title: "Широкий выбор",
+    description: "От классического балета до современного арт-хауса — выбирайте мероприятия по своему вкусу.",
+    icon: "star",
+    badge: "Разнообразие",
   },
   {
-    title: "Поддержка XR",
-    description: "Нативная совместимость с AR/VR-средами для терапевтических и рабочих приложений.",
-    icon: "target",
-    badge: "XR Ready",
+    title: "Только легальные билеты",
+    description: "Все билеты приобретаются через официальные сервисы. Никаких перекупщиков и поддельных мест.",
+    icon: "shield",
+    badge: "Безопасно",
   },
 ]
 
 export function FeaturesSection() {
   return (
-    <section className="py-24 px-6 bg-background">
+    <section id="features" className="py-24 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4 font-sans">Возможности нового поколения</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4 font-orbitron">Всё что нужно знать</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Почувствуйте будущее с технологиями, которые переопределяют возможное
+            Пушкинская карта — государственная программа поддержки молодёжи и культуры
           </p>
         </div>
 
@@ -61,12 +61,12 @@ export function FeaturesSection() {
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-3xl">
-                    {feature.icon === "brain" && "&#129504;"}
-                    {feature.icon === "lock" && "&#128274;"}
-                    {feature.icon === "globe" && "&#127760;"}
-                    {feature.icon === "zap" && "&#9889;"}
-                    {feature.icon === "link" && "&#128279;"}
-                    {feature.icon === "target" && "&#127919;"}
+                    {feature.icon === "gift" && "🎁"}
+                    {feature.icon === "wallet" && "💰"}
+                    {feature.icon === "map" && "🗺️"}
+                    {feature.icon === "phone" && "📱"}
+                    {feature.icon === "star" && "⭐"}
+                    {feature.icon === "shield" && "🛡️"}
                   </span>
                   <Badge variant="secondary" className="bg-accent text-accent-foreground">
                     {feature.badge}
