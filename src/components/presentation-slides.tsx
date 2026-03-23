@@ -31,12 +31,13 @@ export function SlideContents() {
   const items = [
     { num: "01", title: "Титульный лист" },
     { num: "02", title: "Содержание" },
-    { num: "03", title: "Актуальность темы" },
-    { num: "04", title: "Цель и задачи исследования" },
-    { num: "05", title: "Основная часть" },
-    { num: "06", title: "Методы исследования и результаты по России" },
-    { num: "07", title: "Вывод" },
-    { num: "08", title: "Заключение" },
+    { num: "03", title: "Введение" },
+    { num: "04", title: "Актуальность темы" },
+    { num: "05", title: "Цель и задачи исследования" },
+    { num: "06", title: "Основная часть" },
+    { num: "07", title: "Методы исследования и результаты по России" },
+    { num: "08", title: "Вывод" },
+    { num: "09", title: "Заключение" },
   ]
 
   return (
@@ -59,10 +60,62 @@ export function SlideContents() {
   )
 }
 
+export function SlideIntroduction() {
+  return (
+    <SlideWrapper id="slide-introduction">
+      <SlideTitle number="03" title="Введение" />
+      <div className="flex-1 flex flex-col justify-center gap-6 max-w-4xl">
+
+        <p className="text-gray-300 font-geist text-base md:text-lg leading-relaxed">
+          Культура — неотъемлемая часть жизни общества. Театры, музеи, выставки и кино формируют
+          мировоззрение, развивают творческое мышление и сохраняют историческую память народа.
+          Однако для многих молодых людей посещение культурных учреждений остаётся недоступным
+          из-за высокой стоимости билетов.
+        </p>
+
+        <div className="p-5 rounded-xl border-l-4 border-yellow-500 bg-yellow-500/5">
+          <p className="text-white font-geist text-base md:text-lg leading-relaxed italic">
+            В 2021 году по инициативе Президента Российской Федерации В.В. Путина была запущена
+            программа «Пушкинская карта» — специальная именная карта для молодёжи,
+            позволяющая бесплатно посещать культурные мероприятия за счёт государства.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            {
+              icon: "🎭",
+              title: "Объект исследования",
+              text: "Государственная программа «Пушкинская карта» как инструмент культурной политики России",
+            },
+            {
+              icon: "🔍",
+              title: "Предмет исследования",
+              text: "Механизм реализации программы и её влияние на культурную активность молодёжи",
+            },
+            {
+              icon: "💡",
+              title: "Гипотеза",
+              text: "Государственная поддержка в форме именной карты способствует росту культурной активности молодёжи",
+            },
+          ].map((card) => (
+            <div key={card.title} className="p-5 rounded-xl border border-yellow-500/20 bg-white/3">
+              <div className="text-2xl mb-3">{card.icon}</div>
+              <p className="text-yellow-400 font-geist text-xs tracking-widest uppercase mb-2">{card.title}</p>
+              <p className="text-gray-300 font-geist text-sm leading-relaxed">{card.text}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </SlideWrapper>
+  )
+}
+
 export function SlideRelevance() {
   return (
     <SlideWrapper id="slide-relevance">
-      <SlideTitle number="03" title="Актуальность темы" />
+      <SlideTitle number="04" title="Актуальность темы" />
       <div className="flex-1 flex flex-col justify-center gap-6 max-w-4xl">
         <p className="text-gray-300 font-geist text-base md:text-lg leading-relaxed">
           В современном обществе доступность культурных мероприятий для молодёжи остаётся серьёзной проблемой.
@@ -98,7 +151,7 @@ export function SlideRelevance() {
 export function SlideGoals() {
   return (
     <SlideWrapper id="slide-goals">
-      <SlideTitle number="04" title="Цель и задачи исследования" />
+      <SlideTitle number="05" title="Цель и задачи исследования" />
       <div className="flex-1 flex flex-col justify-center gap-8 max-w-4xl">
 
         <div className="p-6 rounded-xl border border-yellow-500/30 bg-yellow-500/8">
@@ -136,7 +189,7 @@ export function SlideGoals() {
 export function SlideMain() {
   return (
     <SlideWrapper id="slide-main">
-      <SlideTitle number="05" title="Основная часть" />
+      <SlideTitle number="06" title="Основная часть" />
       <div className="flex-1 flex flex-col justify-center gap-6 max-w-4xl">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -199,7 +252,7 @@ export function SlideMain() {
 export function SlideMethods() {
   return (
     <SlideWrapper id="slide-methods">
-      <SlideTitle number="06" title="Методы исследования и результаты по России" />
+      <SlideTitle number="07" title="Методы исследования и результаты по России" />
       <div className="flex-1 flex flex-col justify-center gap-6 max-w-5xl">
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -263,7 +316,7 @@ export function SlideMethods() {
 export function SlideConclusion() {
   return (
     <SlideWrapper id="slide-conclusion">
-      <SlideTitle number="07" title="Вывод" />
+      <SlideTitle number="08" title="Вывод" />
       <div className="flex-1 flex flex-col justify-center gap-6 max-w-4xl">
 
         <div className="p-6 rounded-xl border-l-4 border-yellow-500 bg-yellow-500/5">
