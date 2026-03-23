@@ -1,192 +1,96 @@
-import { Canvas, extend, useFrame } from "@react-three/fiber"
-import { useAspect, useTexture } from "@react-three/drei"
-import { useMemo, useRef, useState, useEffect } from "react"
-import * as THREE from "three"
-
-const TEXTUREMAP = { src: "https://i.postimg.cc/XYwvXN8D/img-4.png" }
-const DEPTHMAP = { src: "https://i.postimg.cc/2SHKQh2q/raw-4.webp" }
-
-extend(THREE as unknown as Record<string, unknown>)
-
-const WIDTH = 300
-const HEIGHT = 300
-
-const Scene = () => {
-  const [rawMap, depthMap] = useTexture([TEXTUREMAP.src, DEPTHMAP.src])
-  const meshRef = useRef<THREE.Mesh>(null)
-
-  const material = useMemo(() => {
-    const vertexShader = `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `
-
-    const fragmentShader = `
-      uniform sampler2D uTexture;
-      uniform sampler2D uDepthMap;
-      uniform vec2 uPointer;
-      uniform float uProgress;
-      uniform float uTime;
-      varying vec2 vUv;
-
-      // Simple noise function
-      float random(vec2 st) {
-        return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-      }
-
-      float noise(vec2 st) {
-        vec2 i = floor(st);
-        vec2 f = fract(st);
-        float a = random(i);
-        float b = random(i + vec2(1.0, 0.0));
-        float c = random(i + vec2(0.0, 1.0));
-        float d = random(i + vec2(1.0, 1.0));
-        vec2 u = f * f * (3.0 - 2.0 * f);
-        return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-      }
-
-      void main() {
-        vec2 uv = vUv;
-
-        // Depth-based displacement
-        float depth = texture2D(uDepthMap, uv).r;
-        vec2 displacement = depth * uPointer * 0.01;
-        vec2 distortedUv = uv + displacement;
-
-        // Base texture
-        vec4 baseColor = texture2D(uTexture, distortedUv);
-
-        // Create scanning effect
-        float aspect = ${WIDTH}.0 / ${HEIGHT}.0;
-        vec2 tUv = vec2(uv.x * aspect, uv.y);
-        vec2 tiling = vec2(120.0);
-        vec2 tiledUv = mod(tUv * tiling, 2.0) - 1.0;
-
-        float brightness = noise(tUv * tiling * 0.5);
-        float dist = length(tiledUv);
-        float dot = smoothstep(0.5, 0.49, dist) * brightness;
-
-        // Flow effect based on progress
-        float flow = 1.0 - smoothstep(0.0, 0.02, abs(depth - uProgress));
-
-        // Gold scanning overlay
-        vec3 mask = vec3(dot * flow * 10.0, dot * flow * 7.0, 0.0);
-
-        // Combine effects
-        vec3 final = baseColor.rgb + mask;
-
-        gl_FragColor = vec4(final, 1.0);
-      }
-    `
-
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        uTexture: { value: rawMap },
-        uDepthMap: { value: depthMap },
-        uPointer: { value: new THREE.Vector2(0, 0) },
-        uProgress: { value: 0 },
-        uTime: { value: 0 },
-      },
-      vertexShader,
-      fragmentShader,
-    })
-  }, [rawMap, depthMap])
-
-  const [w, h] = useAspect(WIDTH, HEIGHT)
-
-  useFrame(({ clock, pointer }) => {
-    if (material.uniforms) {
-      material.uniforms.uProgress.value = Math.sin(clock.getElapsedTime() * 0.5) * 0.5 + 0.5
-      material.uniforms.uPointer.value = pointer
-      material.uniforms.uTime.value = clock.getElapsedTime()
-    }
-  })
-
-  const scaleFactor = 0.3
-  return (
-    <mesh ref={meshRef} scale={[w * scaleFactor, h * scaleFactor, 1]} material={material}>
-      <planeGeometry />
-    </mesh>
-  )
-}
-
 export const Hero3DWebGL = () => {
-  const titleWords = "Пушкинская Карта".split(" ")
-  const subtitle = "Твой билет в мир культуры — театры, музеи, кино по всей России."
-  const [visibleWords, setVisibleWords] = useState(0)
-  const [subtitleVisible, setSubtitleVisible] = useState(false)
-  const [delays, setDelays] = useState<number[]>([])
-  const [subtitleDelay, setSubtitleDelay] = useState(0)
-
-  useEffect(() => {
-    setDelays(titleWords.map(() => Math.random() * 0.07))
-    setSubtitleDelay(Math.random() * 0.1)
-  }, [titleWords.length])
-
-  useEffect(() => {
-    if (visibleWords < titleWords.length) {
-      const timeout = setTimeout(() => setVisibleWords(visibleWords + 1), 600)
-      return () => clearTimeout(timeout)
-    } else {
-      const timeout = setTimeout(() => setSubtitleVisible(true), 800)
-      return () => clearTimeout(timeout)
-    }
-  }, [visibleWords, titleWords.length])
-
   return (
-    <div className="h-screen bg-black relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none z-10">
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
-        <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
-        <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-black to-transparent" />
+    <div className="min-h-screen bg-[#0a0f1e] relative overflow-hidden flex flex-col">
+      {/* Декоративный фон */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(180,140,50,0.08)_0%,_transparent_70%)]" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60" />
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60" />
+        <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-yellow-500 to-transparent opacity-40" />
+        <div className="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-b from-transparent via-yellow-500 to-transparent opacity-40" />
+        {/* Орнаментальные уголки */}
+        <div className="absolute top-8 left-8 w-16 h-16 border-t-2 border-l-2 border-yellow-500/50" />
+        <div className="absolute top-8 right-8 w-16 h-16 border-t-2 border-r-2 border-yellow-500/50" />
+        <div className="absolute bottom-8 left-8 w-16 h-16 border-b-2 border-l-2 border-yellow-500/50" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-b-2 border-r-2 border-yellow-500/50" />
       </div>
 
-      <div className="h-screen uppercase items-center w-full absolute z-[60] pointer-events-none px-10 flex justify-center flex-col">
-        <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold font-orbitron">
-          <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
-            {titleWords.map((word, index) => (
-              <div
-                key={index}
-                className={index < visibleWords ? "fade-in" : ""}
-                style={{
-                  animationDelay: `${index * 0.13 + (delays[index] || 0)}s`,
-                  opacity: index < visibleWords ? undefined : 0,
-                }}
-              >
-                {word}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold max-w-4xl mx-auto text-center px-4">
-          <div
-            className={subtitleVisible ? "fade-in-subtitle" : ""}
-            style={{
-              animationDelay: `${titleWords.length * 0.13 + 0.2 + subtitleDelay}s`,
-              opacity: subtitleVisible ? undefined : 0,
-            }}
-          >
-            {subtitle}
-          </div>
-        </div>
-      </div>
+      <div className="relative z-10 flex flex-col min-h-screen px-8 md:px-16 py-12 md:py-16">
 
-      <Canvas
-        flat
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: "high-performance",
-        }}
-        camera={{ position: [0, 0, 1] }}
-        style={{ background: "#000000" }}
-      >
-        <Scene />
-      </Canvas>
+        {/* Верх — название учреждения */}
+        <div className="text-center pt-4 md:pt-8">
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed font-geist max-w-2xl mx-auto">
+            Муниципальное автономное общеобразовательное учреждение
+          </p>
+          <p className="text-white text-base md:text-lg font-semibold leading-relaxed font-geist max-w-2xl mx-auto mt-1">
+            «Гимназия № 4» городского округа
+          </p>
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed font-geist max-w-2xl mx-auto">
+            город Стерлитамак Республики Башкортостан
+          </p>
+          <div className="mt-4 mx-auto w-32 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
+        </div>
+
+        {/* Центр — главное содержимое */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
+          <div className="mb-6">
+            <span className="text-yellow-500/60 text-xs md:text-sm font-geist tracking-[0.3em] uppercase">
+              — научная работа —
+            </span>
+          </div>
+
+          <h2 className="text-white text-xl md:text-2xl font-semibold font-geist tracking-widest uppercase mb-8 opacity-80">
+            ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА
+          </h2>
+
+          <div className="relative">
+            <div className="absolute -inset-4 bg-yellow-500/5 rounded-xl blur-xl" />
+            <h1 className="relative text-4xl md:text-6xl xl:text-7xl font-extrabold font-orbitron text-white leading-tight">
+              Пушкинская
+            </h1>
+            <h1 className="relative text-4xl md:text-6xl xl:text-7xl font-extrabold font-orbitron leading-tight mt-1">
+              <span className="text-yellow-400">Карта</span>
+            </h1>
+          </div>
+
+          <div className="mt-8 flex items-center gap-4">
+            <div className="w-16 h-px bg-yellow-500/40" />
+            <span className="text-yellow-500/70 text-2xl">✦</span>
+            <div className="w-16 h-px bg-yellow-500/40" />
+          </div>
+        </div>
+
+        {/* Низ — автор справа */}
+        <div className="flex justify-end pb-4 md:pb-8">
+          <div className="text-right max-w-xs">
+            <div className="w-full h-px bg-gradient-to-l from-yellow-500/40 to-transparent mb-4" />
+            <p className="text-gray-300 text-sm font-geist leading-relaxed">
+              Выполнила ученица 9А класса
+            </p>
+            <p className="text-gray-300 text-sm font-geist leading-relaxed">
+              МАОУ «Гимназия №4»
+            </p>
+            <p className="text-gray-300 text-sm font-geist leading-relaxed">
+              ГО г. Стерлитамак РБ
+            </p>
+            <p className="text-white text-base font-semibold font-geist mt-2">
+              Кизина Екатерина
+            </p>
+            <div className="mt-3 pt-3 border-t border-yellow-500/20">
+              <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                Научный руководитель
+              </p>
+              <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                учитель обществознания и истории
+              </p>
+              <p className="text-gray-400 text-xs font-geist leading-relaxed">
+                высшей квалификационной категории
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }
